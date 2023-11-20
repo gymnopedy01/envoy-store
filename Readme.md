@@ -15,12 +15,12 @@ envoy-overrride.yaml
 admin:
   address:
     socket_address:
-      address: 127.0.0.1
+      address: 0.0.0.0
       port_value: 9902
 ```
-
 ```shell
 docker run --rm -it \
+      -p 9901:9901 \
       -p 9902:9902 \
       -p 10000:10000 \
       envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 \
@@ -46,7 +46,7 @@ https://www.envoyproxy.io/docs/envoy/latest/start/quick-start/run-envoy
 fuga@FUGA-PC:~/envoy$ ls
 envoy-config.yaml  envoy-custom.yaml  envoy-demo.yaml  envoy-dynamic-filesystem-demo.yaml  envoy-override.yaml  envoy-store.yaml  logs  my-envoy-config.yaml
 ```
-docker run --rm -it -p 9902:9902 -p 10000:10000 -v $(pwd)/envoy-store.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 -c my-envoy-config.yaml
+docker run --rm -it -p 9901:9901 -p 10000:10000 -v $(pwd)/envoy-store.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 -c my-envoy-config.yaml
 ```
 
 http://localhost:10000/store/aion
@@ -59,3 +59,6 @@ http://localhost:10000/docs
 ```shell
  git clone https://github.com/envoyproxy/go-control-plane.git
 ```
+go-control-plane/bin/example
+docker run --rm -it -p 19000:19000 -p 10000:10000 -v $(pwd)/envoy-dynamic-control-plane-demo.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 -c my-envoy-config.yaml
+
