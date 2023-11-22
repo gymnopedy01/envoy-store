@@ -4,6 +4,7 @@ https://trends.google.com/trends/explore?date=today%205-y&q=haproxy,nginx,envoy&
 ``` shell
 docker run --rm -it -p 9901:9901 -p 10000:10000 envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5
 curl -v localhost:10000
+docker exec 89e4ca793a0d cat /etc/envoy/envoy.yaml
 ```
 http://localhost:9901/help
 
@@ -40,8 +41,8 @@ docker run --rm \
  ```
 
 # 정적 구성 store-envoy 
-https://www.envoyproxy.io/docs/envoy/latest/start/quick-start/run-envoy
-[envoy-store.yaml](./envoy-store.yaml)
+- https://www.envoyproxy.io/docs/envoy/latest/start/quick-start/run-envoy
+- [envoy-store.yaml](./envoy-store.yaml)
 ```
 docker run --rm -it -p 9901:9901 -p 10000:10000 -v $(pwd)/envoy-store.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 -c my-envoy-config.yaml
 ```
@@ -50,6 +51,7 @@ docker run --rm -it -p 9901:9901 -p 10000:10000 -v $(pwd)/envoy-store.yaml:/my-e
 
 
 # 동적 구성 store-envoy
+[envoy-dynamic-control-plane-demo.yaml](./envoy-dynamic-control-plane-demo.yaml)
 ```shell
 docker run --rm -it -p 19000:19000 -p 10000:10000 -v $(pwd)/envoy-dynamic-control-plane-demo.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 -c my-envoy-config.yaml
 ```
@@ -64,9 +66,14 @@ docker run --rm -it -p 19000:19000 -p 10000:10000 -v $(pwd)/envoy-dynamic-contro
 ## java-control-plane
 https://github.com/envoyproxy/java-control-plane
 
+## envoy내 curl 설치
 ```
 apt-get update
+apt-get install curl
 apt-get install curl
 curl 172.30.112.1:18000
 curl 172.30.112.1:18000
 ```
+
+
+sudo apt-get install libc6-dev
