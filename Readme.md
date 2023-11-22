@@ -8,9 +8,8 @@ curl -v localhost:10000
 http://localhost:9901/help
 
 
-
 # 기본구성재정의
-envoy-overrride.yaml
+[envoy-override.yaml](./envoy-override.yaml)
 ```yaml
 admin:
   address:
@@ -27,8 +26,11 @@ docker run --rm -it \
           -c /etc/envoy/envoy.yaml \
           --config-yaml "$(cat envoy-override.yaml)"
 ```
+http://localhost:9902/help
+
 
 # Envoy 구성 검증
+[my-envoy-config.yaml](./my-envoy-config.yaml)
 ```shell
 docker run --rm \
       -v $(pwd)/my-envoy-config.yaml:/my-envoy-config.yaml \
@@ -36,29 +38,35 @@ docker run --rm \
           --mode validate \
           -c my-envoy-config.yaml
  ```
-```shell
-docker run --rm -v $(pwd)/envoy-override.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 --mode validate -c my-envoy-config.yaml
-```
 
-# 정적 구성 store-envooy 
+# 정적 구성 store-envoy 
 https://www.envoyproxy.io/docs/envoy/latest/start/quick-start/run-envoy
-
-fuga@FUGA-PC:~/envoy$ ls
-envoy-config.yaml  envoy-custom.yaml  envoy-demo.yaml  envoy-dynamic-filesystem-demo.yaml  envoy-override.yaml  envoy-store.yaml  logs  my-envoy-config.yaml
+[envoy-store.yaml](./envoy-store.yaml)
 ```
 docker run --rm -it -p 9901:9901 -p 10000:10000 -v $(pwd)/envoy-store.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 -c my-envoy-config.yaml
 ```
+- http://localhost:10000/store/aion
+- http://localhost:10000/docs
 
-http://localhost:10000/store/aion
-http://localhost:10000/docs
 
-
-# 동적구성 store-envoy
+# 동적 구성 store-envoy
+```shell
+docker run --rm -it -p 19000:19000 -p 10000:10000 -v $(pwd)/envoy-dynamic-control-plane-demo.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 -c my-envoy-config.yaml
+```
 
 ## go-conrol-plane
 ```shell
  git clone https://github.com/envoyproxy/go-control-plane.git
+ make docker_tests
+ go-control-plane/bin/example
 ```
-go-control-plane/bin/example
-docker run --rm -it -p 19000:19000 -p 10000:10000 -v $(pwd)/envoy-dynamic-control-plane-demo.yaml:/my-envoy-config.yaml envoyproxy/envoy:dev-876753ad28d6601b91c25b8af59db4f4737c84a5 -c my-envoy-config.yaml
 
+## java-control-plane
+https://github.com/envoyproxy/java-control-plane
+
+```
+apt-get update
+apt-get install curl
+curl 172.30.112.1:18000
+curl 172.30.112.1:18000
+```
